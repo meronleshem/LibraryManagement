@@ -20,7 +20,8 @@ namespace Persistence
                     Author = "George R. R. Martin",
                     Genere = "Fantasy",
                     Year = 1996,
-                    availableQuantity = 2
+                    AvailableQuantity = 2,
+                    Image = "http://www.georgerrmartin.com/wp-content/uploads/2013/03/GOTMTI2.jpg"
                 },
                 new Book
                 {
@@ -28,7 +29,8 @@ namespace Persistence
                     Author = "Harlan Coben",
                     Genere = "Thriller",
                     Year = 2012,
-                    availableQuantity = 2
+                    AvailableQuantity = 2,
+                    Image = "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1347702195l/11737271.jpg"
                 },
                 new Book
                 {
@@ -36,7 +38,8 @@ namespace Persistence
                     Author = "J. R. R. Tolkien",
                     Genere = "Fantasy",
                     Year = 1937,
-                    availableQuantity = 1
+                    AvailableQuantity = 1,
+                    Image = "https://m.media-amazon.com/images/I/413V3sIKSJL._AC_SY780_.jpg"
                 },
                 new Book
                 {
@@ -44,7 +47,8 @@ namespace Persistence
                     Author = "Rhonda Byrne",
                     Genere = "Self-Help",
                     Year = 2006,
-                    availableQuantity = 2
+                    AvailableQuantity = 2,
+                    Image = "https://m.media-amazon.com/images/I/413V3sIKSJL._AC_SY780_.jpg"
                 },
             };
 
