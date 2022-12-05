@@ -4,12 +4,13 @@ import { Container, Header, List } from 'semantic-ui-react';
 import { Book } from '../models/book';
 import NavBar from './NavBar';
 import BooksDashboard from '../../features/books/dashboard/BooksDashboard';
-
+import {v4 as uuid} from 'uuid';
 
 function App() {
 
   const [books, setBooks] = useState<Book[]>([]);
   const [selectedBook, setSelectedBook] = useState<Book | undefined>(undefined);
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     axios.get<Book[]>('http://localhost:5000/books').then(response => {
@@ -26,15 +27,39 @@ function App() {
     setSelectedBook(undefined);
   }
 
+  function handleFormOpen(id?: string){
+    id ? handleSelectedBook(id) : handleCloseSelectedBook();
+    setEditMode(true);
+  }
+
+  function handleFormClose(id?: string){
+    setEditMode(false);
+  }
+
+  function handleCreateBook(book: Book){
+    setBooks([...books, {...book, id: uuid()}]);
+    setEditMode(false);
+    setSelectedBook(book);
+  }
+
+  function handleDeleteBook(id: string){
+    setBooks([...books.filter(b => b.id !== id)]);
+  }
+
   return (
     <Fragment>
-      <NavBar />
+      <NavBar openForm={handleFormOpen}/>
       <Container style={{ margin: '7em' }}>
         <BooksDashboard
          books={books}
          selectedBook={selectedBook}
          selectBook={handleSelectedBook}
          closeSelected={handleCloseSelectedBook}
+         editMode={editMode}
+         openForm={handleFormOpen}
+         closeForm={handleFormClose}
+         createBook={handleCreateBook}
+         deleteBook={handleDeleteBook}
          />
       </Container>
     </Fragment>

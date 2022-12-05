@@ -4,9 +4,10 @@ import { Book } from '../../../app/models/book'
 
 interface Props {
     book: Book
+    closeSelected: () => void;
 }
 
-export default function ActivityDeatils({book}: Props) {
+export default function ActivityDeatils({ book, closeSelected }: Props) {
 
     return (
         <Card>
@@ -17,13 +18,14 @@ export default function ActivityDeatils({book}: Props) {
                     <span>{book.author}</span>
                 </Card.Meta>
                 <Card.Description>
-                    {book.year}
+                    <div>{book.year} </div>
+                    <div>Available Quantity: {book.availableQuantity}</div>
                 </Card.Description>
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths='2'>
-                    {/* <Button basic color='blue' content='Edit' /> */}
-                    <Button basic color='grey' content='Close' />
+                    <Button basic color='blue' content='Order' />
+                    <Button onClick={closeSelected} basic color='grey' content='Close' />
                 </Button.Group>
             </Card.Content>
         </Card>
