@@ -5,9 +5,10 @@ import { Book } from "../../../app/models/book";
 interface Props{
     closeForm: () => void;
     createBook: (book: Book) => void;
+    submitting: boolean;
 }
 
-export default function BookForm({ closeForm, createBook}: Props) {
+export default function BookForm({ closeForm, createBook, submitting}: Props) {
 
     const initialState = {
         id: '',

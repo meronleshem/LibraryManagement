@@ -15,10 +15,11 @@ interface Props{
     closeForm: () => void;
     createBook: (book: Book) => void;
     deleteBook: (id: string) => void;
+    submitting: boolean;
 }
 
 export default function BooksDashboard({books, selectedBook, selectBook, closeSelected,
-    editMode, openForm, closeForm, createBook, deleteBook} : Props){
+    editMode, openForm, closeForm, createBook, deleteBook, submitting} : Props){
     return(
         <Grid>
         <Grid.Column width='7'>
@@ -28,7 +29,7 @@ export default function BooksDashboard({books, selectedBook, selectBook, closeSe
             {selectedBook &&  
             <BookDetails book={selectedBook} closeSelected={closeSelected} />}
             {editMode &&
-            <BookForm closeForm={closeForm} createBook={createBook}/>}
+            <BookForm closeForm={closeForm} createBook={createBook} submitting={submitting}/>}
         </Grid.Column>
     </Grid>
     )

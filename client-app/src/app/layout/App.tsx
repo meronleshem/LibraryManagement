@@ -1,21 +1,22 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import axios from 'axios';
 import { Container, Header, List } from 'semantic-ui-react';
 import { Book } from '../models/book';
 import NavBar from './NavBar';
 import BooksDashboard from '../../features/books/dashboard/BooksDashboard';
 import {v4 as uuid} from 'uuid';
+import agent from '../api/agent';
 
 function App() {
 
   const [books, setBooks] = useState<Book[]>([]);
   const [selectedBook, setSelectedBook] = useState<Book | undefined>(undefined);
   const [editMode, setEditMode] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    axios.get<Book[]>('http://localhost:5000/books').then(response => {
+    agent.Books.list().then(response => {
       console.log(response);
-      setBooks(response.data);
+      setBooks(response);
     })
   }, [])
 
@@ -37,13 +38,19 @@ function App() {
   }
 
   function handleCreateBook(book: Book){
-    setBooks([...books, {...book, id: uuid()}]);
-    setEditMode(false);
-    setSelectedBook(book);
+    setSubmitting(true);
+    book.id = uuid();
+    agent.Books.create(book).then(() => {
+      setBooks([...books, {...book, id: uuid()}]);
+      setEditMode(false);
+      setSelectedBook(book);
+    })
   }
 
   function handleDeleteBook(id: string){
-    setBooks([...books.filter(b => b.id !== id)]);
+    agent.Books.delete(id).then(() => {
+      setBooks([...books.filter(b => b.id !== id)]);
+    })
   }
 
   return (
@@ -60,6 +67,7 @@ function App() {
          closeForm={handleFormClose}
          createBook={handleCreateBook}
          deleteBook={handleDeleteBook}
+         submitting={submitting}
          />
       </Container>
     </Fragment>
