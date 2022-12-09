@@ -12,7 +12,7 @@ namespace Application.Books
     {
         public class Command : IRequest
         {
-            public Book Book { get; set; }
+            public Book? Book { get; set; }
         }
 
         public class Handler : IRequestHandler<Command>

@@ -1,14 +1,13 @@
-import { makeAutoObservable, makeObservable, observable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Book } from "../models/book";
 import { v4 as uuid } from 'uuid';
 
 export default class BookStore {
-    // books: Book[] = [];
     books = new Map<string, Book>();
     selectedBook: Book | undefined = undefined;
     editMode = false;
-    loadingInitial = true;
+    loadingInitial = false;
 
     constructor() {
         makeAutoObservable(this)
@@ -19,6 +18,7 @@ export default class BookStore {
     }
 
     loadBooks = async () => {
+        this.setLoadingInitial(true);
         try{
             const books = await agent.Books.list();
             books.forEach(book =>{
@@ -31,24 +31,34 @@ export default class BookStore {
         }
     } 
 
+    loadBook = async (id: string) => {
+        let book = this.getBook(id);
+
+        if(book) {
+            this.selectedBook = book;
+            return book;
+        }
+        else {
+            this.setLoadingInitial(true);
+            try {
+                book = await agent.Books.details(id);
+                this.books.set(book.id, book);
+                runInAction(() => this.selectedBook = book);
+                return book;
+            } catch (error) {
+                console.log(error);
+            } finally {
+                this.setLoadingInitial(false);
+            }
+        }
+    }
+
     setLoadingInitial = (state: boolean) => {
         this.loadingInitial = state;
     }
-
-    selectBook = (id: string) => {
-        this.selectedBook = this.books.get(id);
-    }
-
-    cancelSelectedBook = () => {
-        this.selectedBook = undefined;
-    }
-
-    openForm = () => {
-        this.editMode = true;
-    }
-
-    closeForm = () => {
-        this.editMode = false;
+    
+    private getBook = (id: string) => {
+        return this.books.get(id);
     }
 
     createBook = async (book: Book) => {
@@ -66,14 +76,29 @@ export default class BookStore {
         }
     }
 
+    updateBook = async (book: Book) => {
+        try {
+            await agent.Books.update(book);
+            runInAction(() => {
+                this.books.set(book.id, book);
+                this.selectedBook = book;
+                this.editMode = false;
+               // this.loading = false;
+            })
+        } catch (error) {
+            console.log(error);
+            // runInAction(() => {
+            //     this.loading = false;
+            // })
+        }
+    }
+
     deleteBook = async (id: string) => {
 
         try {
             await agent.Books.delete(id);
             runInAction(() => {
                 this.books.delete(id);
-                if (this.selectedBook?.id === id)
-                    this.cancelSelectedBook();
             })
         } catch (error) {
             console.log(error);

@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from 'axios';
-import { resolve } from 'path';
 import { Book } from '../models/book';
 
 const sleep = (delay: number) => {
@@ -10,15 +9,15 @@ const sleep = (delay: number) => {
 
 axios.defaults.baseURL = 'http://localhost:5000/';
 
-// axios.interceptors.response.use(async response => {
-//     try {
-//         await sleep(500);
-//         return response;
-//     } catch (error) {
-//         console.log(error);
-//         return await Promise.reject(error);
-//     }
-// })
+axios.interceptors.response.use(async response => {
+    try {
+        await sleep(200);
+        return response;
+    } catch (error) {
+        console.log(error);
+        return await Promise.reject(error);
+    }
+})
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
