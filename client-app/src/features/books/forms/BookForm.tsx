@@ -1,14 +1,12 @@
+import { observer } from "mobx-react-lite";
 import React, { ChangeEvent, useState } from "react";
 import {Button, Form, Segment} from 'semantic-ui-react';
 import { Book } from "../../../app/models/book";
+import { useStore } from "../../../app/stores/store";
 
-interface Props{
-    closeForm: () => void;
-    createBook: (book: Book) => void;
-    submitting: boolean;
-}
-
-export default function BookForm({ closeForm, createBook, submitting}: Props) {
+export default observer(function BookForm() {
+    const {bookStore} = useStore();
+    const {closeForm: closeForm, createBook: createBook} = bookStore;
 
     const initialState = {
         id: '',
@@ -45,4 +43,4 @@ export default function BookForm({ closeForm, createBook, submitting}: Props) {
             </Form>
         </Segment>
     )
-}
+})

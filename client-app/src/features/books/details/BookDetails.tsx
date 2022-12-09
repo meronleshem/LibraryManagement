@@ -1,13 +1,13 @@
 import React from 'react'
 import { Button, Card, Image } from 'semantic-ui-react'
-import { Book } from '../../../app/models/book'
+import LoadingComponent from '../../../app/layout/LoadingComponent';
+import { useStore } from '../../../app/stores/store'
 
-interface Props {
-    book: Book
-    closeSelected: () => void;
-}
+export default function ActivityDeatils() {
+    const {bookStore} = useStore();
+    const {selectedBook: book, cancelSelectedBook: closeSelected} = bookStore;
 
-export default function ActivityDeatils({ book, closeSelected }: Props) {
+    if(!book) return <LoadingComponent/>;
 
     return (
         <Card>

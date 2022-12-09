@@ -1,18 +1,19 @@
+import { observer } from 'mobx-react-lite';
 import React, { SyntheticEvent, useState } from 'react';
 import { Button, Item, Label, Segment } from 'semantic-ui-react';
 import { Book } from '../../../app/models/book';
+import { useStore } from '../../../app/stores/store';
 
-interface Props {
-    books : Book[];
-    selectBook: (id: string) => void;
-    deleteBook: (id: string) => void;
-}
 
-export default function BookList({books, selectBook, deleteBook}: Props) {
+export default observer(function BookList() {
+
+    const {bookStore} = useStore();
+    const {deleteBook, booksArray} = bookStore;
+
     return (
         <Segment>
             <Item.Group divided >
-                 {books.map(book =>(
+                 {booksArray.map(book =>(
                    <Item key={book.id}>
                     <Item.Content>
                         <Item.Header as='a'>{book.title}</Item.Header>
@@ -21,7 +22,7 @@ export default function BookList({books, selectBook, deleteBook}: Props) {
                            {book.year}
                         </Item.Description>
                         <Item.Extra>
-                            <Button onClick={() => selectBook(book.id)} floated='right' content='Details' color='blue' />
+                            <Button onClick={() => bookStore.selectBook(book.id)} floated='right' content='Details' color='blue' />
                             <Button onClick={() => deleteBook(book.id)} floated='right' content='Delete' color='red' />
                             <Label basic content={book.genere} />
                         </Item.Extra>
@@ -32,4 +33,4 @@ export default function BookList({books, selectBook, deleteBook}: Props) {
         </Segment>
 
     )
-}
+})

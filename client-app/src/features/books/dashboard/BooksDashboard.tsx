@@ -1,36 +1,26 @@
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Grid, List } from 'semantic-ui-react';
-import { Book } from '../../../app/models/book';
+import { useStore } from '../../../app/stores/store';
 import BookDetails from '../details/BookDetails';
 import BookForm from '../forms/BookForm';
 import BookList from './BookList';
 
-interface Props{
-    books: Book[]
-    selectedBook: Book | undefined;
-    selectBook: (id: string) => void;
-    closeSelected: () => void;
-    editMode: boolean;
-    openForm: (id: string) => void;
-    closeForm: () => void;
-    createBook: (book: Book) => void;
-    deleteBook: (id: string) => void;
-    submitting: boolean;
-}
+export default observer(function BooksDashboard() {
 
-export default function BooksDashboard({books, selectedBook, selectBook, closeSelected,
-    editMode, openForm, closeForm, createBook, deleteBook, submitting} : Props){
-    return(
+    const { bookStore } = useStore();
+    const {selectedBook: selectedBook, editMode: editMode} = bookStore;
+    return (
         <Grid>
-        <Grid.Column width='7'>
-            <BookList books={books} selectBook={selectBook} deleteBook={deleteBook}/>
-        </Grid.Column>
-        <Grid.Column width='6'>
-            {selectedBook &&  
-            <BookDetails book={selectedBook} closeSelected={closeSelected} />}
-            {editMode &&
-            <BookForm closeForm={closeForm} createBook={createBook} submitting={submitting}/>}
-        </Grid.Column>
-    </Grid>
+            <Grid.Column width='7'>
+                <BookList />
+            </Grid.Column>
+            <Grid.Column width='6'>
+                {selectedBook &&
+                    <BookDetails />}
+                {editMode &&
+                    <BookForm />}
+            </Grid.Column>
+        </Grid>
     )
-}
+})
