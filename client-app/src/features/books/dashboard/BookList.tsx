@@ -1,37 +1,32 @@
 import { observer } from 'mobx-react-lite';
+import { Fragment } from 'react';
 //import React, { SyntheticEvent, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Item, Label, Segment } from 'semantic-ui-react';
+import { Header, Item, Segment } from 'semantic-ui-react';
+import LoadingComponent from '../../../app/layout/LoadingComponent';
 import { useStore } from '../../../app/stores/store';
+import BookListItem from './BookListItem';
 
 
 export default observer(function BookList() {
 
-    const {bookStore} = useStore();
-    const {deleteBook, booksArray} = bookStore;
+    const { bookStore } = useStore();
+    const { groupByGenere, booksArray } = bookStore;
 
+    // console.log(`${groupByGenere}`);
     return (
-        <Segment>
-            <Item.Group divided >
-                 {booksArray.map(book =>(
-                   <Item key={book.id}>
-                    <Item.Content>
-                        <Item.Header as='a'>{book.title}</Item.Header>
-                        <Item.Meta>{book.author}</Item.Meta>
-                        <Item.Description>
-                           {book.year}
-                        </Item.Description>
-                        <Item.Extra>
-                            {/* <Button onClick={() => bookStore.selectBook(book.id)} floated='right' content='Details' color='blue' /> */}
-                            <Button as={Link} to={`/books/${book.id}`} floated='right' content='Details' color='blue' />
-                            <Button onClick={() => deleteBook(book.id)} floated='right' content='Delete' color='red' />
-                            <Label basic content={book.genere} />
-                        </Item.Extra>
-                    </Item.Content>
-                   </Item> 
-                 ))}
-            </Item.Group>
-        </Segment>
+        <>
+
+            {groupByGenere.map(([group, books]) => (
+                < Fragment key={group} >
+                    <Header sub color='teal'>{group}</Header>
+                    {books.map(book => (
+                        <BookListItem key={book.id} book={book} />
+                    ))}
+                </Fragment>
+            ))}
+
+        </>
+
 
     )
 })

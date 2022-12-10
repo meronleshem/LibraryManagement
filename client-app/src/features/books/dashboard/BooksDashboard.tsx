@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { Grid } from 'semantic-ui-react';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 import { useStore } from '../../../app/stores/store';
+import BookFilters from './BookFilters';
 import BookList from './BookList';
 
 export default observer(function BooksDashboard() {
@@ -22,7 +23,7 @@ export default observer(function BooksDashboard() {
                 <BookList />
             </Grid.Column>
             <Grid.Column width='6'>
-                <h2>Book Filters</h2>
+                <BookFilters />
             </Grid.Column>
         </Grid>
     )

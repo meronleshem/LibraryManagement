@@ -17,6 +17,16 @@ export default class BookStore {
         return Array.from(this.books.values());
     }
 
+    get groupByGenere() {
+        return Object.entries(
+            this.booksArray.reduce((books, book) => {
+                const genere = book.genere;
+                books[genere] = books[genere] ? [...books[genere], book] : [book];
+                return books;
+            }, {} as {[key: string]: Book[]} )
+        )
+    }
+
     loadBooks = async () => {
         this.setLoadingInitial(true);
         try{
