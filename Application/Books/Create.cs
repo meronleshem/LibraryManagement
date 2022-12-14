@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Core;
 using Domain;
+using FluentValidation;
 using MediatR;
 using Persistence;
 
@@ -10,12 +12,20 @@ namespace Application.Books
 {
     public class Create
     {
-        public class Command : IRequest
+        public class Command : IRequest<Result<Unit>>
         {
             public Book? Book { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command>
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(b => b.Book).SetValidator(new BookValidator());
+            }
+        }
+
+        public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext context;
             public Handler(DataContext context)
@@ -23,13 +33,16 @@ namespace Application.Books
                 this.context = context;
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 context.Books.Add(request.Book);
 
-                await context.SaveChangesAsync();
+                var result = await context.SaveChangesAsync() > 0;
 
-                return Unit.Value;
+                if(!result)
+                    return Result<Unit>.Failure("Failed to create book");
+
+                return Result<Unit>.Success(Unit.Value);
             }
         }
     }

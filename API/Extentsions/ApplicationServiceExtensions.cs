@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Application.Books;
 using Application.Core;
 using AutoMapper;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -37,8 +39,10 @@ namespace API.Extentsions
             });
 
             services.AddMediatR(typeof(List.Handler).Assembly);
-
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            services.AddFluentValidationAutoValidation();
+            services.AddValidatorsFromAssemblyContaining<Create>();
+
         //     var mapperConfig = new MapperConfiguration(mc =>{
         //     mc.AddProfile(new MappingProfiles());
         //      });
