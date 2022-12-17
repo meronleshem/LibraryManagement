@@ -16,24 +16,27 @@ export default observer(function BookForm() {
     const { bookStore } = useStore();
     const { createBook, updateBook, loadBook, loadingInitial } = bookStore;
     const { id } = useParams();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const currYear = new Date().getFullYear();
 
 
     const [book, setBook] = useState<Book>({
         id: '',
         title: '',
         author: '',
-        year: 2022,
+        year: undefined,
         genere: '',
-        availableQuantity: 0,
+        totalQuantity: undefined,
+        availableQuantity: undefined,
         image: ''
     });
 
     const validationSchema = Yup.object({
         title: Yup.string().required('The book title is required'),
         author: Yup.string().required('The author is required'),
-        year: Yup.number().required().min(1800),
+        year: Yup.number().required().max(currYear),
         genere: Yup.string().required(),
+        totalQuantity: Yup.number().required().min(0),
         availableQuantity: Yup.number().required().min(0),
         image: Yup.string().required()
     })
@@ -69,7 +72,8 @@ export default observer(function BookForm() {
                         <ValidateTextInput placeholder='Author' name='author' />
                         <ValidateTextInput placeholder='Year' name='year' />
                         <ValidateSelectInput options={genereOptions} placeholder='Genere' name='genere' />
-                        <ValidateTextInput placeholder='Quantity' name='availableQuantity' />
+                        <ValidateTextInput placeholder='Total Quantity' name='totalQuantity' />
+                        <ValidateTextInput placeholder='Available Quantity' name='availableQuantity' />
                         <ValidateTextInput placeholder='Image' name='image' />
                         <Button
                             disabled={isSubmitting || !dirty || !isValid }

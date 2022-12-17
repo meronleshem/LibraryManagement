@@ -12,8 +12,8 @@ namespace Domain
         public string Author { get; set; }
         public string Genere { get; set; }
         public int Year { get; set; }
+        public int TotalQuantity {get; set;}
         public int AvailableQuantity { get; set; }
-
         public string Image {get; set;}
     }
 }

@@ -3,7 +3,8 @@ export interface Book {
     title: string;
     author: string;
     genere: string;
-    year: number;
-    availableQuantity: number;
+    year: number | undefined;
+    totalQuantity: number | undefined;
+    availableQuantity: number | undefined;
     image: string;
 }

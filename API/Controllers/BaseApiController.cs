@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("books/")]
+    [Route("[controller]")]
     public class BaseApiController : ControllerBase
     {
         private IMediator mediator;

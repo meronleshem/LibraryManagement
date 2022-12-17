@@ -5,31 +5,31 @@ import axios from 'axios';
 import ValidationError from './ValidationError';
 
 export default function TestErrors() {
-    const baseUrl = 'http://localhost:5000/books/';
+    const baseUrl = 'http://localhost:5000/';
     const [errors, setErrors] = useState(null);
 
     function handleNotFound() {
-        axios.get(baseUrl + 'not-found').catch(err => console.log(err.response));
+        axios.get(baseUrl + 'buggy/not-found').catch(err => console.log(err.response));
     }
 
     function handleBadRequest() {
-        axios.get(baseUrl + 'bad-request').catch(err => console.log(err.response));
+        axios.get(baseUrl + 'buggy/bad-request').catch(err => console.log(err.response));
     }
 
     function handleServerError() {
-        axios.get(baseUrl + 'server-error').catch(err => console.log(err.response));
+        axios.get(baseUrl + 'buggy/server-error').catch(err => console.log(err.response));
     }
 
     function handleUnauthorised() {
-        axios.get(baseUrl + 'unauthorised').catch(err => console.log(err.response));
+        axios.get(baseUrl + 'buggy/unauthorised').catch(err => console.log(err.response));
     }
 
     function handleBadGuid() {
-        axios.get(baseUrl + 'notaguid').catch(err => console.log(err.response));
+        axios.get(baseUrl + 'buggy/notaguid').catch(err => console.log(err.response));
     }
 
     function handleValidationError() {
-        axios.post(baseUrl, {}).catch(err => setErrors(err));
+        axios.post(baseUrl + 'books', {}).catch(err => setErrors(err));
     }
 
     return (
