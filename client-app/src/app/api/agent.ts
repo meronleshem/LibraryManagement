@@ -1,6 +1,8 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import { config, off } from 'process';
 import { toast } from 'react-toastify';
 import { Book } from '../models/book';
+import { User, UserFormValues } from '../models/user';
 import { router } from '../router/Routes';
 import { store } from '../stores/store';
 
@@ -11,6 +13,14 @@ const sleep = (delay: number) => {
 }
 
 axios.defaults.baseURL = 'http://localhost:5000/';
+
+axios.interceptors.request.use(config => {
+    const token = store.commonStore.token;
+    if (token && config.headers)  {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+})
 
 axios.interceptors.response.use(async response => {
     await sleep(200);
@@ -71,8 +81,15 @@ const Books = {
     delete: (id: string) => requests.del<void>(`/books/${id}`)
 }
 
+const Account = {
+    current: () => requests.get<User>('/account'),
+    login: (user: UserFormValues) => requests.post<User>('/account/login', user),
+    register: (user: UserFormValues) => requests.post<User>('/account/register', user)
+}
+
 const agent = {
-    Books
+    Books,
+    Account
 }
 
 export default agent;

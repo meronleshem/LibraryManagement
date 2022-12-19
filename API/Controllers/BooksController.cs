@@ -11,9 +11,9 @@ using Persistence;
 
 namespace API.Controllers
 {
+    [AllowAnonymous]
     public class BooksController : BaseApiController
     {
-  
         [HttpGet]
         public async Task<IActionResult> GetBooks()
         {
