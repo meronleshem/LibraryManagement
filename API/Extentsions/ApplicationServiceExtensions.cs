@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Books;
 using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Infrastructure.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -42,13 +44,8 @@ namespace API.Extentsions
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<Create>();
-
-        //     var mapperConfig = new MapperConfiguration(mc =>{
-        //     mc.AddProfile(new MappingProfiles());
-        //      });
-
-        //    IMapper mapper = mapperConfig.CreateMapper();
-        //    services.AddSingleton(mapper);
+            services.AddHttpContextAccessor();
+            services.AddScoped<IUserAccessor, UserAccessor>();
 
             return services;
         }

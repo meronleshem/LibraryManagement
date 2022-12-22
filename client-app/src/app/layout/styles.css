@@ -17,8 +17,10 @@ body {
           rgb(33, 138, 174) 69%,
           rgb(32, 167, 172) 89%
   ) !important;
+  /* background-image: url('https://images.pexels.com/photos/3847645/pexels-photo-3847645.jpeg?auto=compress&cs=tinysrgb&dpr=1') !important; */
   height: 100vh;
-  background-size: cover;
+  background-size: cover !important;
+  background-repeat: no-repeat;
 }
 
 .masthead .ui.menu .ui.button,

@@ -11,7 +11,6 @@ using Persistence;
 
 namespace API.Controllers
 {
-    [AllowAnonymous]
     public class BooksController : BaseApiController
     {
         [HttpGet]

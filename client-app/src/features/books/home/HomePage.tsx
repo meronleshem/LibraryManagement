@@ -17,7 +17,7 @@ export default observer(function HomePage() {
                 </Header>
                 {userStore.isLoggedIn ? (
                     <>
-                        <Header as='h2' inverted content='Welcome' />
+                        <Header as='h2'  inverted content='Welcome' />
                         <Button as={Link} to='/books' size='huge' inverted>
                             Go to Catalog
                         </Button>
