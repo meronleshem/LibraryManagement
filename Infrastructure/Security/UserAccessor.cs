@@ -16,9 +16,11 @@ namespace Infrastructure.Security
             this.httpContextAccessor = httpContextAccessor;
         }
          
-        public string GetUsername()
+        public string GetUserId()
         {
-            return httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+            var username = httpContextAccessor.HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            return username;
         }
     }
 }

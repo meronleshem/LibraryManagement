@@ -26,7 +26,7 @@ namespace Persistence
             builder.Entity<BorrowBook>()
                 .HasOne(u => u.User)
                 .WithMany(b => b.BorrowBooks)
-                .HasForeignKey(bb => bb.User);
+                .HasForeignKey(bb => bb.UserId);
 
             builder.Entity<BorrowBook>()
                 .HasOne(b => b.Book)

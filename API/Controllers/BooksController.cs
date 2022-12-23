@@ -43,5 +43,11 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new Delete.Command{Id = id}));
         }
+
+        [HttpPost("{id}/borrow")]
+        public async Task<IActionResult> Borrow(Guid id)
+        {   
+            return HandleResult(await Mediator.Send(new UpdateBorrow.Command{Id = id}));
+        }
     }
 }
