@@ -3,7 +3,7 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, FormField, Header, Label, Segment } from 'semantic-ui-react';
 import LoadingComponent from "../../../app/layout/LoadingComponent";
-import { Book } from "../../../app/models/book";
+import { Book, BookFormValues } from "../../../app/models/book";
 import { useStore } from "../../../app/stores/store";
 import { v4 as uuid } from 'uuid';
 import { Formik, Form, ErrorMessage } from "formik";
@@ -20,16 +20,7 @@ export default observer(function BookForm() {
     const currYear = new Date().getFullYear();
 
 
-    const [book, setBook] = useState<Book>({
-        id: '',
-        title: '',
-        author: '',
-        year: undefined,
-        genere: '',
-        totalQuantity: undefined,
-        availableQuantity: undefined,
-        image: ''
-    });
+    const [book, setBook] = useState<BookFormValues>(new BookFormValues)
 
     const validationSchema = Yup.object({
         title: Yup.string().required('The book title is required'),
@@ -43,10 +34,10 @@ export default observer(function BookForm() {
 
     useEffect(() => {
         if (id)
-            loadBook(id).then(book => setBook(book!));
+            loadBook(id).then(book => setBook(new BookFormValues(book)));
     }, [id, loadBook]);
 
-    function handleFormSubmit(book: Book) {
+    function handleFormSubmit(book: BookFormValues) {
         if (!book.id) {
             book.id = uuid();
             createBook(book).then(() => navigate(`/books/${book.id}`))

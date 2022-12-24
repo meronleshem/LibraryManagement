@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { config, off } from 'process';
 import { toast } from 'react-toastify';
-import { Book } from '../models/book';
+import { Book, BookFormValues } from '../models/book';
 import { User, UserFormValues } from '../models/user';
 import { router } from '../router/Routes';
 import { store } from '../stores/store';
@@ -76,9 +76,10 @@ const requests = {
 const Books = {
     list: () => requests.get<Book[]>('/books'),
     details: (id: string) => requests.get<Book>(`/books/${id}`),
-    create: (book: Book) => requests.post<void>('/books', book),
-    update: (book: Book) => requests.put<void>(`/books/${book.id}`, book),
-    delete: (id: string) => requests.del<void>(`/books/${id}`)
+    create: (book: BookFormValues) => requests.post<void>('/books', book),
+    update: (book: BookFormValues) => requests.put<void>(`/books/${book.id}`, book),
+    delete: (id: string) => requests.del<void>(`/books/${id}`),
+    borrow: (id: string) => requests.post<void>(`/books/${id}/borrow`, {})
 }
 
 const Account = {

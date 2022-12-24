@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Icon, Item, Label, Segment } from 'semantic-ui-react';
+import { Button, Icon, Item, ItemDescription, Label, Segment } from 'semantic-ui-react';
 import { Book } from '../../../app/models/book';
 import { useStore } from '../../../app/stores/store';
+import BookListItemBorrower from './BookListItemBorrower';
+import BoofListItemBorrowe from './BookListItemBorrower';
 
 interface Props {
     book: Book
@@ -11,6 +13,12 @@ interface Props {
 export default function BookListItem({ book }: Props) {
     const { bookStore } = useStore();
     const { deleteBook, booksArray } = bookStore;
+
+    let availableLabel;
+
+    if (book.availableQuantity == 0) {
+        availableLabel = <Label style={{ position: 'center' }} color='red' ribbon='right'>Out Of Stock</Label>
+    }
 
     return (
         // <Item key={book.id}>
@@ -29,9 +37,11 @@ export default function BookListItem({ book }: Props) {
         //     </Item.Content>
         // </Item>
 
+
         <Segment.Group>
             <Segment>
                 <Item.Group>
+                    {availableLabel}
                     <Item>
                         <Item.Image size='tiny' src={book.image} />
                         <Item.Content>
@@ -40,15 +50,25 @@ export default function BookListItem({ book }: Props) {
                             </Item.Header>
                             <Item.Description>
                                 <div>
-                                <Icon name='user outline' />   {book.author}
+                                    <Icon name='user outline' />   {book.author}
                                 </div>
                                 <div>
-                                <Icon name='calendar alternate outline' /> {book.year}
+                                    <Icon name='calendar alternate outline' /> {book.year}
                                 </div>
                             </Item.Description>
+                            {book.isBorrowing && (
+                                <Item.Description>
+                                    <Label basic color='green'>
+                                        You are borrowing this book
+                                    </Label>
+                                </Item.Description>
+                            )}
                         </Item.Content>
                     </Item>
                 </Item.Group>
+            </Segment>
+            <Segment secondary>
+                <BookListItemBorrower borrowers={book.borrowers!} />
             </Segment>
             <Segment clearing>
                 <span>

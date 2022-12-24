@@ -8,6 +8,7 @@ import BookDetailsHeader from './BookDetailsHeader';
 import BookDetailsHeder from './BookDetailsHeader';
 import BookDetailsInfo from './BookDetailsInfo';
 import BookDetailsReviews from './BookDetailsReviews';
+import BookDetailsSideBar from './BookDetailsSideBar';
 
 export default observer(function ActivityDeatils() {
     const { bookStore } = useStore();
@@ -30,6 +31,9 @@ export default observer(function ActivityDeatils() {
                 <BookDetailsHeader book={book}/>
                {/* <BookDetailsInfo /> */}
                 <BookDetailsReviews />
+            </Grid.Column>
+            <Grid.Column width={6}>
+                <BookDetailsSideBar book={book} />
             </Grid.Column>
         </Grid>
     )
