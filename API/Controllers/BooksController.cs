@@ -25,12 +25,14 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new Details.Query{Id = id}));
         }
         
+        [Authorize(Policy = "IsAdmin")]
         [HttpPost]
         public async Task<IActionResult> CreateActivity(Book book)
         {
             return HandleResult(await Mediator.Send(new Create.Command{Book = book}));
         }
 
+        [Authorize(Policy = "IsAdmin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditActivity(Guid id, Book book)
         {
@@ -38,6 +40,7 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new Edit.Command{Book = book}));
         }
 
+        [Authorize(Policy = "IsAdmin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteActivity(Guid id)
         {

@@ -16,9 +16,9 @@ namespace Persistence
             {
                 var users = new List<User>
                 {
-                    new User{Name = "Meron", UserName = "meron", Email = "meron@test.com"},
-                    new User{Name = "Eden", UserName = "eden", Email = "eden@test.com"},
-                    new User{Name = "Yakov", UserName = "yakov", Email = "yakov@test.com"}
+                    new User{Name = "Meron", UserName = "meron", Email = "meron@test.com", IsAdmin = true},
+                    new User{Name = "Eden", UserName = "eden", Email = "eden@test.com", IsAdmin = false},
+                    new User{Name = "Yakov", UserName = "yakov", Email = "yakov@test.com", IsAdmin = false}
                 };
 
                 foreach (var user in users)
@@ -27,7 +27,6 @@ namespace Persistence
                 }
 
             }
-
 
             if (context.Books.Any()) return;
 
