@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Books;
+using Application.Comments;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -51,6 +52,12 @@ namespace API.Controllers
         public async Task<IActionResult> Borrow(Guid id)
         {   
             return HandleResult(await Mediator.Send(new UpdateBorrow.Command{Id = id}));
+        }
+
+        [HttpPost("{id}/comment")]
+        public async Task<IActionResult> AddComment(Guid id, CommentContent content)
+        {   
+            return HandleResult(await Mediator.Send(new CreateComment.Command{BookId = id, CommentContent = content}));
         }
     }
 }

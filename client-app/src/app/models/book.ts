@@ -1,3 +1,4 @@
+import { ChatComment } from "./comment";
 import { Profile } from "./Profile";
 
 export interface Book {
@@ -11,6 +12,7 @@ export interface Book {
     image: string;
     isBorrowing: boolean;
     borrowers: Profile[];
+    comments: ChatComment[];
 }
 
 export class Book implements Book {

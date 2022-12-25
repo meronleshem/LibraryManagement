@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Comments;
 using Application.Profiles;
+using Domain;
 
 namespace Application.Books
 {
@@ -17,6 +19,6 @@ namespace Application.Books
         public int AvailableQuantity { get; set; }
         public string Image {get; set;}
         public ICollection<BorrowerDto> Borrowers {get; set;}
-        
+        public ICollection<CommentDto> Comments {get; set;}
     }
 }

@@ -16,5 +16,6 @@ namespace Domain
         public int AvailableQuantity { get; set; }
         public string Image {get; set;}
         public ICollection<BorrowBook> Borrowers {get; set;} = new List<BorrowBook>();
+        public ICollection<Comment> Comments {get; set;} = new List<Comment>();
     }
 }

@@ -1,8 +1,21 @@
+import { Form, Formik } from 'formik';
+import { link } from 'fs';
 import { observer } from 'mobx-react-lite'
 import React from 'react'
-import {Segment, Header, Comment, Form, Button} from 'semantic-ui-react'
+import { Link } from 'react-router-dom';
+import { Segment, Header, Comment, Button } from 'semantic-ui-react'
+import ValidateTextInput from '../../../app/common/form/ValidateTextInput';
+import { ChatComment } from '../../../app/models/comment';
+import { useStore } from '../../../app/stores/store';
+import * as Yup from 'yup';
 
-export default observer(function BookDetailsReviews() {
+interface Props {
+    comments: ChatComment[];
+}
+
+export default observer(function BookDetailsReviews({ comments }: Props) {
+    const { bookStore } = useStore();
+
     return (
         <>
             <Segment
@@ -10,49 +23,49 @@ export default observer(function BookDetailsReviews() {
                 attached='top'
                 inverted
                 color='blue'
-                style={{border: 'none'}}
+                style={{ border: 'none' }}
             >
                 <Header>Users Reviews</Header>
             </Segment>
-            <Segment attached>
+            <Segment attached clearing>
                 <Comment.Group>
-                    <Comment>
-                        <Comment.Avatar src='/assets/user.png'/>
-                        <Comment.Content>
-                            <Comment.Author as='a'>Matt</Comment.Author>
-                            <Comment.Metadata>
-                                <div>Today at 5:42PM</div>
-                            </Comment.Metadata>
-                            <Comment.Text>How artistic!</Comment.Text>
-                            <Comment.Actions>
-                                <Comment.Action>Reply</Comment.Action>
-                            </Comment.Actions>
-                        </Comment.Content>
-                    </Comment>
+                    {comments.map(comment => (
+                        <Comment key={comment.id}>
+                            <Comment.Avatar src='/assets/user.png' />
+                            <Comment.Content>
+                                <Comment.Author as={Link} to={`/profiles/${comment.username}`}>{comment.name}</Comment.Author>
+                                <Comment.Metadata>
+                                    <div>{comment.createdAt}</div>
+                                </Comment.Metadata>
+                                <Comment.Text>{comment.content}</Comment.Text>
+                            </Comment.Content>
+                        </Comment>
+                    ))}
 
-                    <Comment>
-                        <Comment.Avatar src='/assets/user.png'/>
-                        <Comment.Content>
-                            <Comment.Author as='a'>Joe Henderson</Comment.Author>
-                            <Comment.Metadata>
-                                <div>5 days ago</div>
-                            </Comment.Metadata>
-                            <Comment.Text>Dude, this is awesome. Thanks so much</Comment.Text>
-                            <Comment.Actions>
-                                <Comment.Action>Reply</Comment.Action>
-                            </Comment.Actions>
-                        </Comment.Content>
-                    </Comment>
+                    <Formik onSubmit={(values, { resetForm }) =>
+                        bookStore.addComment(values.contentComment).then(() => resetForm())}
+                        initialValues={{ contentComment: '' }}
+                        validationSchema={Yup.object({
+                            contentComment: Yup.string().required()
+                        })}
+                    >
+                        {({ isSubmitting, isValid }) => (
+                            <Form className='ui form'>
+                                <br />
+                                <ValidateTextInput placeholder='Add comment' name='contentComment' />
+                                <Button
+                                    loading={isSubmitting}
+                                    disabled={isSubmitting || !isValid}
+                                    content='Add Reply'
+                                    labelPosition='left'
+                                    icon='edit'
+                                    primary
+                                    type='submit'
+                                />
+                            </Form>
+                        )}
+                    </Formik>
 
-                    <Form reply>
-                        <Form.TextArea/>
-                        <Button
-                            content='Add Reply'
-                            labelPosition='left'
-                            icon='edit'
-                            primary
-                        />
-                    </Form>
                 </Comment.Group>
             </Segment>
         </>

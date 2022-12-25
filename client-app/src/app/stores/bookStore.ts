@@ -1,9 +1,11 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction, values } from "mobx";
 import agent from "../api/agent";
 import { Book, BookFormValues } from "../models/book";
 import { v4 as uuid } from 'uuid';
 import { store } from "./store";
 import { Profile } from "../models/Profile";
+import { string } from "yup";
+import { CommentContent } from "../models/comment";
 
 export default class BookStore {
     books = new Map<string, Book>();
@@ -147,6 +149,15 @@ export default class BookStore {
                 this.books.set(this.selectedBook!.id, this.selectedBook!);
             })
         } catch (error) {
+            console.log(error);
+        }
+    }
+
+    addComment = async (commentContent: string) => {
+        try {
+            await agent.Books.comment(this.selectedBook?.id!, new CommentContent(commentContent));
+            window.location.reload();
+        }catch (error) {
             console.log(error);
         }
     }

@@ -10,12 +10,10 @@ export default observer(function NavBar() {
     return (
         <Menu inverted fixed='top'>
             <Container>
-                <Menu.Item as={NavLink} to='/' header>
+                <Menu.Item as={NavLink} to='/books'>
                     <img src="/assets/Books.png" alt="logo" style={{ marginRight: '10px' }} />
-                    Library Home
+                    Catalog
                 </Menu.Item>
-                <Menu.Item as={NavLink} to='/books' name='Books' />
-                <Menu.Item as={NavLink} to='/errors' name='Errors' />
                 <Menu.Item>
                     <Button as={NavLink} to='/createBook' positive content='Add Book' />
                 </Menu.Item>

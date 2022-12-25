@@ -14,7 +14,6 @@ export default function ValidateTextInput(props: Props) {
 
     return (
         <>
-            <label>{props.name}</label>
             <Form.Field error={meta.touched && !!meta.error}>
                 <label>{props.label}</label>
                 <input {...field} {...props} />

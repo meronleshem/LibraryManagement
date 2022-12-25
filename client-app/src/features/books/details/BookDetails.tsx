@@ -30,7 +30,7 @@ export default observer(function ActivityDeatils() {
             <Grid.Column width={10}>
                 <BookDetailsHeader book={book}/>
                {/* <BookDetailsInfo /> */}
-                <BookDetailsReviews />
+                <BookDetailsReviews comments={book.comments} />
             </Grid.Column>
             <Grid.Column width={6}>
                 <BookDetailsSideBar book={book} />

@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { config, off } from 'process';
 import { toast } from 'react-toastify';
 import { Book, BookFormValues } from '../models/book';
+import { CommentContent } from '../models/comment';
 import { Profile } from '../models/Profile';
 import { User, UserFormValues } from '../models/user';
 import { router } from '../router/Routes';
@@ -80,7 +81,8 @@ const Books = {
     create: (book: BookFormValues) => requests.post<void>('/books', book),
     update: (book: BookFormValues) => requests.put<void>(`/books/${book.id}`, book),
     delete: (id: string) => requests.del<void>(`/books/${id}`),
-    borrow: (id: string) => requests.post<void>(`/books/${id}/borrow`, {})
+    borrow: (id: string) => requests.post<void>(`/books/${id}/borrow`, {}),
+    comment: (id: string, content: CommentContent) => requests.post<void>(`/books/${id}/comment`, content)
 }
 
 const Account = {

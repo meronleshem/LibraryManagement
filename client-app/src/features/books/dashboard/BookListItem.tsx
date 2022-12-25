@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Icon, Item, ItemDescription, Label, Segment } from 'semantic-ui-react';
+import { bool } from 'yup';
 import { Book } from '../../../app/models/book';
 import { useStore } from '../../../app/stores/store';
 import BookListItemBorrower from './BookListItemBorrower';
