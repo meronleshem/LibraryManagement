@@ -14,9 +14,10 @@ namespace Application.Core
         {
             CreateMap<Book, Book>();
             CreateMap<Book, BookDto>();
-            CreateMap<BorrowBook, Profiles.Profile>()
+            CreateMap<BorrowBook, BorrowerDto>()
                 .ForMember(d => d.Name, o => o.MapFrom(s => s.User.Name))
                 .ForMember(d => d.Username, o => o.MapFrom(s => s.User.UserName));
+            CreateMap<User, Profiles.Profile>();
         }
     }
 }

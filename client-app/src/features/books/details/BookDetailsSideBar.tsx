@@ -28,10 +28,6 @@ export default observer(function BookDetailsSideBar({ book: {borrowers, isBorrow
                 <List relaxed divided>
                     {borrowers.map(borrower => (
                         <Item key={borrower.username} style={{ position: 'relative' }}>
-                            {isBorrowing && 
-                            <Label style={{ position: 'absolute'}} color='green' ribbon='right'>
-                                You
-                            </Label>}
                             <Image size='mini' src={'/assets/user.png'} />
                             <Item.Content verticalAlign='middle'>
                                 <Item.Header as='h3'>

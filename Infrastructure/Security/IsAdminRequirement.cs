@@ -33,7 +33,7 @@ namespace Infrastructure.Security
 
             var user = dbContext.Users.FirstOrDefault(u => u.Id == userId);
 
-            if(user.IsAdmin == true) 
+            if(user != null && user.IsAdmin == true) 
                 context.Succeed(requirement);
 
             return Task.CompletedTask;

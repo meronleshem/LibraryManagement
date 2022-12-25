@@ -16,7 +16,7 @@ namespace Application.Books
         public int TotalQuantity {get; set;}
         public int AvailableQuantity { get; set; }
         public string Image {get; set;}
-        public ICollection<Profile> Borrowers {get; set;}
+        public ICollection<BorrowerDto> Borrowers {get; set;}
         
     }
 }

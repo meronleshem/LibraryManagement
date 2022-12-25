@@ -2,14 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Domain;
 
-namespace Application.Profiles
+namespace Application.Books
 {
-    public class Profile
+    public class BorrowerDto
     {
         public string Username { get; set; }
         public string Name { get; set; }
-        public ICollection<Book> books {get; set;}
     }
 }

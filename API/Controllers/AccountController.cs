@@ -86,7 +86,8 @@ namespace API.Controllers
             {
                 Name = user.Name,
                 Token = tokenService.CreateToken(user),
-                Username = user.UserName
+                Username = user.UserName,
+                IsAdmin = user.IsAdmin
             };
         }
     }

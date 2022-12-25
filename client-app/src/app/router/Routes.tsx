@@ -6,6 +6,7 @@ import HomePage from "../../features/books/home/HomePage";
 import NotFound from "../../features/errors/NotFound";
 import ServerError from "../../features/errors/ServerError";
 import TestErrors from "../../features/errors/TestError";
+import ProfilePage from "../../features/profiles/ProfilePage";
 import LoginForm from "../../features/users/LoginForm";
 import App from "../layout/App";
 
@@ -18,6 +19,7 @@ export const routes: RouteObject[] = [
             {path: 'books/:id', element: <BookDetails />},
             {path: 'createBook', element: <BookForm key='create' />},
             {path: 'edit/:id', element: <BookForm key='edit' />},
+            {path: 'profiles/:username', element: <ProfilePage />},
             {path: 'login', element: <LoginForm />},
             {path: 'errors', element: <TestErrors />},
             {path: 'not-found', element: <NotFound />},
