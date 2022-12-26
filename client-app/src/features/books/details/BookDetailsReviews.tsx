@@ -16,6 +16,11 @@ interface Props {
 export default observer(function BookDetailsReviews({ comments }: Props) {
     const { bookStore } = useStore();
 
+    const onlyDateFromUtc = (data: any) => {
+        var date = new Date(data);
+        return date.toLocaleDateString();
+    }
+
     return (
         <>
             <Segment
@@ -35,7 +40,7 @@ export default observer(function BookDetailsReviews({ comments }: Props) {
                             <Comment.Content>
                                 <Comment.Author as={Link} to={`/profiles/${comment.username}`}>{comment.name}</Comment.Author>
                                 <Comment.Metadata>
-                                    <div>{comment.createdAt}</div>
+                                    <div>{onlyDateFromUtc(comment.createdAt)}</div>
                                 </Comment.Metadata>
                                 <Comment.Text>{comment.content}</Comment.Text>
                             </Comment.Content>

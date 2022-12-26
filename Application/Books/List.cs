@@ -14,9 +14,12 @@ namespace Application.Books
 {
     public class List
     {
-        public class Query : IRequest<Result<List<BookDto>>> { }
+        public class Query : IRequest<Result<PageList<BookDto>>>
+        {
+            public PagingParams Params { get; set; }
+        }
 
-        public class Handler : IRequestHandler<Query, Result<List<BookDto>>>
+        public class Handler : IRequestHandler<Query, Result<PageList<BookDto>>>
         {
             private readonly DataContext context;
             private readonly IMapper mapper;
@@ -27,13 +30,17 @@ namespace Application.Books
                 this.context = context;
             }
 
-            public async Task<Result<List<BookDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<PageList<BookDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var books = await context.Books
+                var query =  context.Books
+                    .OrderBy(b => b.Genere)
                     .ProjectTo<BookDto>(mapper.ConfigurationProvider)
-                    .ToListAsync(cancellationToken);
+                    .AsQueryable();
 
-                return Result<List<BookDto>>.Success(books);
+                return Result<PageList<BookDto>>.Success(
+                    await PageList<BookDto>.CreateAsync(query,
+                        request.Params.PageNumber, request.Params.PageSize)
+                );
             }
         }
     }

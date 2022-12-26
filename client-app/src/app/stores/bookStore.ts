@@ -6,15 +6,29 @@ import { store } from "./store";
 import { Profile } from "../models/Profile";
 import { string } from "yup";
 import { CommentContent } from "../models/comment";
+import { Pagination, PagingParams } from "../models/pagination";
 
 export default class BookStore {
     books = new Map<string, Book>();
     selectedBook: Book | undefined = undefined;
     editMode = false;
     loadingInitial = false;
+    pagination: Pagination | null = null;
+    pagingParams = new PagingParams();
 
     constructor() {
         makeAutoObservable(this)
+    }
+
+    setPagingParams = (pagingParams: PagingParams) => {
+        this.pagingParams = pagingParams;
+    }
+
+    get axiosParams() {
+        const params = new URLSearchParams();
+        params.append('pageNumber', this.pagingParams.pageNumber.toString());
+        params.append('pageSize', this.pagingParams.pageSize.toString());
+        return params;
     }
 
     get booksArray() {
@@ -34,15 +48,20 @@ export default class BookStore {
     loadBooks = async () => {
         this.setLoadingInitial(true);
         try {
-            const books = await agent.Books.list();
-            books.forEach(book => {
+            const result = await agent.Books.list(this.axiosParams);
+            result.data.forEach(book => {
                 this.setBook(book);
             })
+            this.setPagination(result.pagination);
         } catch (error) {
             console.log(error);
         } finally {
             this.setLoadingInitial(false);
         }
+    }
+
+    setPagination = (pagination: Pagination) => {
+        this.pagination = pagination;
     }
 
     loadBook = async (id: string) => {

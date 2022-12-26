@@ -3,6 +3,7 @@ import { config, off } from 'process';
 import { toast } from 'react-toastify';
 import { Book, BookFormValues } from '../models/book';
 import { CommentContent } from '../models/comment';
+import { PaginatedResult } from '../models/pagination';
 import { Profile } from '../models/Profile';
 import { User, UserFormValues } from '../models/user';
 import { router } from '../router/Routes';
@@ -26,6 +27,11 @@ axios.interceptors.request.use(config => {
 
 axios.interceptors.response.use(async response => {
     await sleep(200);
+    const pagination = response.headers['pagination'];
+    if(pagination){
+        response.data = new PaginatedResult(response.data, JSON.parse(pagination));
+        return response as AxiosResponse<PaginatedResult<any>>
+    }
     return response;
 }, (error: AxiosError) => {
     const { data, status, config } = error.response as AxiosResponse;
@@ -76,7 +82,8 @@ const requests = {
 }
 
 const Books = {
-    list: () => requests.get<Book[]>('/books'),
+    list: (params: URLSearchParams) => axios.get<PaginatedResult<Book[]>>('/books', {params})
+        .then(responseBody), 
     details: (id: string) => requests.get<Book>(`/books/${id}`),
     create: (book: BookFormValues) => requests.post<void>('/books', book),
     update: (book: BookFormValues) => requests.put<void>(`/books/${book.id}`, book),
