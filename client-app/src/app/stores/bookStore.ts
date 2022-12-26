@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction, values } from "mobx";
+import { makeAutoObservable, reaction, runInAction, values } from "mobx";
 import agent from "../api/agent";
 import { Book, BookFormValues } from "../models/book";
 import { v4 as uuid } from 'uuid';
@@ -15,19 +15,48 @@ export default class BookStore {
     loadingInitial = false;
     pagination: Pagination | null = null;
     pagingParams = new PagingParams();
+    predicate = new Map().set('all', true);
 
     constructor() {
-        makeAutoObservable(this)
+        makeAutoObservable(this);
+
+        reaction(
+            () => this.predicate.keys(),
+            () => {
+                this.pagingParams = new PagingParams();
+                this.books.clear();
+                this.loadBooks();
+            }
+        )
     }
 
     setPagingParams = (pagingParams: PagingParams) => {
         this.pagingParams = pagingParams;
     }
 
+    setPredicate = (predicate: string, value: string) => {
+        this.predicate.clear();
+
+        switch (predicate) {
+            case 'all':
+                this.predicate.set('all', true);
+                break;
+            case 'isBorrowing':
+                this.predicate.set('isBorrowing', true);
+                break;
+            case 'isAvailable':
+                this.predicate.set('isAvailable', true);
+                break;
+        }
+    }
+
     get axiosParams() {
         const params = new URLSearchParams();
         params.append('pageNumber', this.pagingParams.pageNumber.toString());
         params.append('pageSize', this.pagingParams.pageSize.toString());
+        this.predicate.forEach((value, key) => {
+            params.append(key, value);
+        })
         return params;
     }
 

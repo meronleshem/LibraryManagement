@@ -16,9 +16,9 @@ namespace API.Controllers
     public class BooksController : BaseApiController
     {
         [HttpGet]
-        public async Task<IActionResult> GetBooks([FromQuery] PagingParams pagingParams)
+        public async Task<IActionResult> GetBooks([FromQuery] BookParams bookParams)
         {
-            return HandlePagedResult(await Mediator.Send(new List.Query { Params = pagingParams }));
+            return HandlePagedResult(await Mediator.Send(new List.Query { Params = bookParams }));
         }
 
         [HttpGet("{id}")]

@@ -6,6 +6,7 @@ import { PagingParams } from '../../../app/models/pagination';
 import { useStore } from '../../../app/stores/store';
 import BookFilters from './BookFilters';
 import BookList from './BookList';
+import BookListItemPlaceholder from './BookListItemPlaceholder';
 
 export default observer(function BooksDashboard() {
     const { bookStore } = useStore();
@@ -24,17 +25,27 @@ export default observer(function BooksDashboard() {
             loadBooks();
     }, [bookStore, books.size])
 
-    if (bookStore.loadingInitial && !loadingNext) return <LoadingComponent />
+    // if (bookStore.loadingInitial && !loadingNext) return <LoadingComponent />
 
     bookList = <BookList />
 
     return (
         <Grid>
             <Grid.Column width='7'>
-                {bookList}
-                <Button floated='right' content="More.." positive onClick={handleGedNext} loading={loadingNext}
-                    disabled={pagination?.totalPages === pagination?.currentPage}
-                />
+                {bookStore.loadingInitial && !loadingNext ? (
+                    <>
+                        <BookListItemPlaceholder />
+                        <BookListItemPlaceholder />
+                    </>
+                ) : (
+                    <>
+                        {bookList}
+                        <Button floated='right' content="More.." positive onClick={handleGedNext} loading={loadingNext}
+                            disabled={pagination?.totalPages === pagination?.currentPage}
+                        />
+                    </>
+                )}
+
             </Grid.Column>
             <Grid.Column width='6'>
                 <BookFilters />
